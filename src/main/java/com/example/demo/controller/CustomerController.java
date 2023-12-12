@@ -29,8 +29,8 @@ public class CustomerController {
 	
 	//getalldetails
 	@GetMapping(value = "/getalldetails")
-	public ResponseEntity<List<CustomerDTO>> getalldetails() {
-		List<CustomerDTO> list = customerService.getAllDetails();
+	public ResponseEntity<List<CustomerDTO>> getalldetails(Integer page, Integer pageLength) {
+		List<CustomerDTO> list = customerService.getAllDetails(page, pageLength);
 		return ResponseEntity.ok(list);
 	}
 	

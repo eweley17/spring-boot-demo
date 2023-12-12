@@ -6,6 +6,10 @@ import java.util.List;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.mapper.CustomerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,9 +30,11 @@ public class CustomerServiceImpl implements CustomerService {
 	private AccountDAO accountDAO;
 
 	@Override
-	public List<CustomerDTO> getAllDetails() {
+	public List<CustomerDTO> getAllDetails(Integer page, Integer pageLength) {
 		List<CustomerDTO> list = new ArrayList<>();
-		List<Customer> customerList = customerDAO.findAll();
+
+		Pageable pageable = PageRequest.of(page, pageLength);
+		List<Customer> customerList = customerDAO.findAll(pageable).toList();
 		List<Account> accountList = accountDAO.findAll();
 		for (Customer customer : customerList) {
 			Account account = accountList.parallelStream().filter(c -> c.getId().equals(customer.getAccount().getId())).findAny().orElse(null);

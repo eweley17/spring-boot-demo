@@ -6,7 +6,7 @@ import com.example.demo.dto.CustomerDTO;
 
 public interface CustomerService {
 
-	public List<CustomerDTO> getAllDetails();
+	public List<CustomerDTO> getAllDetails(Integer page, Integer pageLength);
 
 	public CustomerDTO getDetailById(Long id);
 
