@@ -32,7 +32,7 @@ public class Customer {
 	@Column(name = "address")
 	private String address;
 	
-	@ManyToOne(cascade=CascadeType.ALL, targetEntity=Account.class, fetch = FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.ALL, targetEntity=Account.class, fetch = FetchType.EAGER)
     @JoinColumn(name="account", nullable=true)
 	private Account account;
 

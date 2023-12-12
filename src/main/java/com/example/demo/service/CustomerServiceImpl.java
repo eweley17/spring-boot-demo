@@ -35,12 +35,8 @@ public class CustomerServiceImpl implements CustomerService {
 
 		Pageable pageable = PageRequest.of(page, pageLength);
 		List<Customer> customerList = customerDAO.findAll(pageable).toList();
-		List<Account> accountList = accountDAO.findAll();
 		for (Customer customer : customerList) {
-			Account account = accountList.parallelStream().filter(c -> c.getId().equals(customer.getAccount().getId())).findAny().orElse(null);
-			if (account != null) {
-				list.add(CustomerMapper.mapToCustomerDTO(customer, account));
-			}
+			list.add(CustomerMapper.mapToCustomerDTO(customer, customer.getAccount()));
 		}
 		return list;
 	}
@@ -48,8 +44,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public CustomerDTO getDetailById(Long id) {
 		Customer customer = customerDAO.findById(id).orElseThrow(() -> new ResourceNotFoundException("Customer is not exist with given ID: " + id));
-		Account account = accountDAO.findById(customer.getAccount().getId()).orElseThrow(() -> new ResourceNotFoundException("Account is not exist withh given ID: " + customer.getAccount().getId()));
-		return CustomerMapper.mapToCustomerDTO(customer, account);
+		return CustomerMapper.mapToCustomerDTO(customer, customer.getAccount());
     }
 
 	@Transactional(readOnly = false)
